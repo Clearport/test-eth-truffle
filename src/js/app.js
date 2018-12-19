@@ -4,6 +4,7 @@ App = {
 
   init: function() {
     // Update this to load the available certs (uses external api, not smart contract)
+    // noted elsewhere when contract is used vs normal web api.   
     /**$.getJSON('../pets.json', function(data) {
       var petsRow = $('#petsRow');
       var petTemplate = $('#petTemplate');
@@ -57,22 +58,17 @@ App = {
     $(document).on('click', '.btn-adopt', App.handleAdopt);
   },
 
-  // certs available for a logged in account
+  // certs available for a logged in account (uses web service not contract)
   retrieveAvailableCerts: function(account) {
 
   },
-
-  // accept a cert using your logged in account info
-  acceptCert: function(account, certData) {
-
-  },
-
-  // visual indication of accepted (get from the chain)
+  // visual indication of accepted (uses contract, uPort id)
   markAccepted: function(account) {
 
   },
-  // interact with the contract to
-  handleAccept: function(account) {
+
+  // accept a cert using your logged in account info (uses contract, uPort id)
+  handleAcceptCert: function(account, certData) {
 
   }
 
