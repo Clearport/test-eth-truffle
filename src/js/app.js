@@ -3,8 +3,8 @@ App = {
   contracts: {},
 
   init: function() {
-    // Load pets.
-    $.getJSON('../pets.json', function(data) {
+    // Update this to load the available certs (uses external api, not smart contract)
+    /**$.getJSON('../pets.json', function(data) {
       var petsRow = $('#petsRow');
       var petTemplate = $('#petTemplate');
 
@@ -18,7 +18,7 @@ App = {
 
         petsRow.append(petTemplate.html());
       }
-    });
+    });*/
 
     return App.initWeb3();
   },
@@ -37,15 +37,16 @@ App = {
   },
 
   initContract: function() {
-      $.getJSON('Adoption.json', function(data) {
+      $.getJSON('UnrevokedSigned.json', function(data) {
           // Get the necessary contract artifact file and instantiate it with truffle-contract
-          var AdoptionArtifact = data;
-          App.contracts.Adoption = TruffleContract(AdoptionArtifact);
+          var UnrevokedSignedArtifact = data;
+          App.contracts.UnrevokedSigned = TruffleContract(UnrevokedSignedArtifact);
 
           // Set the provider for our contract
-          App.contracts.Adoption.setProvider(App.web3Provider);
+          App.contracts.UnrevokedSigned.setProvider(App.web3Provider);
 
           // Use our contract to retrieve and mark the adopted pets
+          //
           return App.markAdopted();
       });
 
@@ -56,50 +57,23 @@ App = {
     $(document).on('click', '.btn-adopt', App.handleAdopt);
   },
 
-  markAdopted: function(adopters, account) {
-    var adoptionInstance;
+  // certs available for a logged in account
+  retrieveAvailableCerts: function(account) {
 
-    App.contracts.Adoption.deployed().then(function(instance) {
-      adoptionInstance = instance;
-
-      return adoptionInstance.getAdopters.call();
-    }).then(function (adopters) {
-      for (i = 0; i < adopters.length; i++) {
-        if(adopters[i] !== '0x0000000000000000000000000000000000000000') {
-          $('.panel-pet').eq(i).find('button').text('Success').attr('disabled', true);
-        }
-      }
-
-    }).catch(function(err) {
-      console.log(err.message);
-    });
   },
 
-  handleAdopt: function(event) {
-    event.preventDefault();
+  // accept a cert using your logged in account info
+  acceptCert: function(account, certData) {
 
-    var petId = parseInt($(event.target).data('id'));
+  },
 
-      var adoptionInstance;
+  // visual indication of accepted (get from the chain)
+  markAccepted: function(account) {
 
-      web3.eth.getAccounts(function(error, accounts) {
-          if (error) {
-              console.log(error);
-          }
+  },
+  // interact with the contract to
+  handleAccept: function(account) {
 
-          var account = accounts[0];
-
-          App.contracts.Adoption.deployed().then(function(instance) {
-              adoptionInstance = instance;
-
-              // Execute adopt as a transaction by sending account
-              return adoptionInstance.adopt(petId, {from: account});
-          }).then(function(result) {
-              return App.markAdopted();
-          }).catch(function(err) {
-              console.log(err.message);
-          });
-      });
   }
 
 };

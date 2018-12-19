@@ -145,6 +145,8 @@ package-lock.json
 .idea/**/dictionaries
 .idea/**/shelf
 
+.idea/**/vcs.xml
+
 # Generated files
 .idea/**/contentModel.xml
 
